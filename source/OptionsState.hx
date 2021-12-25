@@ -30,7 +30,7 @@ using StringTools;
 // TO DO: Redo the menu creation system for not being as dumb
 class OptionsState extends MusicBeatState
 {
-	var options:Array<String> = ['Notes', 'Controls', 'Preferences'];
+	var options:Array<String> = ['Notes', 'Mobile Controls', 'Preferences'];
 	private var grpOptions:FlxTypedGroup<Alphabet>;
 	private static var curSelected:Int = 0;
 	public static var menuBG:FlxSprite;
@@ -59,6 +59,10 @@ class OptionsState extends MusicBeatState
 			grpOptions.add(optionText);
 		}
 		changeSelection();
+
+		#if mobileC
+		addVirtualPad(UP_DOWN, A_B);
+		#end	
 
 		super.create();
 	}
@@ -93,8 +97,8 @@ class OptionsState extends MusicBeatState
 				case 'Notes':
 					openSubState(new NotesSubstate());
 
-				case 'Controls':
-					openSubState(new ControlsSubstate());
+				case 'Mobile Controls':
+					MusicBeatState.switchState(new options.CustomControlsState());				
 
 				case 'Preferences':
 					openSubState(new PreferencesSubstate());
@@ -184,6 +188,10 @@ class NotesSubstate extends MusicBeatSubstate
 		hsvText = new Alphabet(0, 0, "Hue    Saturation  Brightness", false, false, 0, 0.65);
 		add(hsvText);
 		changeSelection();
+
+		#if mobileC
+		addVirtualPad(FULL, A_B);
+		#end	
 	}
 
 	var changingNote:Bool = false;
@@ -459,6 +467,10 @@ class ControlsSubstate extends MusicBeatSubstate {
 			}
 		}
 		changeSelection();
+
+		#if mobileC
+		addVirtualPad(FULL, A_B);
+		#end	
 	}
 
 	var leaving:Bool = false;
@@ -784,6 +796,10 @@ class PreferencesSubstate extends MusicBeatSubstate
 		}
 		changeSelection();
 		reloadValues();
+
+		#if mobileC
+		addVirtualPad(FULL, A_B);
+		#end	
 	}
 
 	var nextAccept:Int = 5;
